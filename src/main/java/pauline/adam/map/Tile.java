@@ -1,7 +1,7 @@
 package pauline.adam.map;
 
 import lombok.Getter;
-import pauline.adam.explorer.Explorer;
+import pauline.adam.adventurer.Adventurer;
 
 public class Tile {
 
@@ -9,7 +9,7 @@ public class Tile {
     @Getter private final int positionY;
     private boolean isMountain = false;
     private boolean hasTreasure = false;
-    private Explorer explorer = null;
+    private Adventurer adventurer = null;
     private Treasure treasure = null;
 
     public Tile(int positionX, int positionY) {
@@ -37,21 +37,21 @@ public class Tile {
         isMountain = true;
     }
 
-    public boolean isOccupied() { return explorer != null; }
+    public boolean isOccupied() { return adventurer != null; }
 
-    public void isNowOccupiedBy(Explorer explorer) {
-        this.explorer = explorer;
+    public void isNowOccupiedBy(Adventurer adventurer) {
+        this.adventurer = adventurer;
     }
 
     public void isNoLongerOccupied() {
-        this.explorer = null;
+        this.adventurer = null;
     }
 
     public boolean canMoveInto() {
         return !isMountain && !isOccupied();
     }
 
-    public Explorer getOccupant() { return explorer; }
+    public Adventurer getOccupant() { return adventurer; }
 
 
 }

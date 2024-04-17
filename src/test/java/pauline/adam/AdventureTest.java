@@ -1,7 +1,7 @@
 package pauline.adam;
 
 import org.junit.jupiter.api.Test;
-import pauline.adam.explorer.*;
+import pauline.adam.adventurer.*;
 import pauline.adam.map.Map;
 import pauline.adam.map.Treasure;
 import pauline.adam.utils.ReadWriteMap;
@@ -16,77 +16,77 @@ class AdventureTest {
     ReadWriteMap readWriteMap = new ReadWriteMap();
 
     @Test
-    void explorer_should_turn_left() {
+    void adventurer_should_turn_left() {
         Map map = readWriteMap.readMap("src/test/java/resources/map_with_pauline.txt");
-        Explorer explorer = map.getExplorers().get(0);
-        map.getExplorers().get(0).setActions(new ArrayList<>(List.of(Action.G)));
+        Adventurer adventurer = map.getAdventurers().get(0);
+        map.getAdventurers().get(0).setActions(new ArrayList<>(List.of(Action.G)));
         Adventure adventure = new Adventure(map);
 
         adventure.treasureHunt();
 
-        assertEquals(Orientation.O, explorer.getOrientation());
+        assertEquals(Orientation.O, adventurer.getOrientation());
     }
 
     @Test
-    void explorer_should_turn_right() {
+    void adventurer_should_turn_right() {
         Map map = readWriteMap.readMap("src/test/java/resources/map_with_pauline.txt");
-        Explorer explorer = map.getExplorers().get(0);
-        map.getExplorers().get(0).setActions(new ArrayList<>(List.of(Action.D)));
+        Adventurer adventurer = map.getAdventurers().get(0);
+        map.getAdventurers().get(0).setActions(new ArrayList<>(List.of(Action.D)));
         Adventure adventure = new Adventure(map);
 
         adventure.treasureHunt();
 
-        assertEquals(Orientation.E, explorer.getOrientation());
+        assertEquals(Orientation.E, adventurer.getOrientation());
     }
 
     @Test
-    void explorer_should_move() {
+    void adventurer_should_move() {
         Map map = readWriteMap.readMap("src/test/java/resources/map_with_pauline.txt");
-        Explorer explorer = map.getExplorers().get(0);
-        int positionX = explorer.getPositionX();
-        int positionY = explorer.getPositionY();
+        Adventurer adventurer = map.getAdventurers().get(0);
+        int positionX = adventurer.getPositionX();
+        int positionY = adventurer.getPositionY();
         Adventure adventure = new Adventure(map);
 
         adventure.treasureHunt();
 
-        assertEquals(positionX, explorer.getPositionX());
-        assertEquals(positionY - 1, explorer.getPositionY());
+        assertEquals(positionX, adventurer.getPositionX());
+        assertEquals(positionY - 1, adventurer.getPositionY());
     }
 
     @Test
-    void explorer_should_not_move_when_moutain_in_front_of_him() {
+    void adventurer_should_not_move_when_moutain_in_front_of_him() {
         Map map = readWriteMap.readMap("src/test/java/resources/map_with_pauline.txt");
-        Explorer explorer = map.getExplorers().get(0);
-        int positionX = explorer.getPositionX();
-        int positionY = explorer.getPositionY();
-        map.getExplorers().get(0).setActions(new ArrayList<>(List.of(Action.D, Action.D, Action.A, Action.A)));
+        Adventurer adventurer = map.getAdventurers().get(0);
+        int positionX = adventurer.getPositionX();
+        int positionY = adventurer.getPositionY();
+        map.getAdventurers().get(0).setActions(new ArrayList<>(List.of(Action.D, Action.D, Action.A, Action.A)));
         Adventure adventure = new Adventure(map);
 
         adventure.treasureHunt();
 
-        assertEquals(Orientation.S, explorer.getOrientation());
-        assertEquals(positionX, explorer.getPositionX());
-        assertEquals(positionY, explorer.getPositionY());
-        assertEquals(0, explorer.getActions().size());
+        assertEquals(Orientation.S, adventurer.getOrientation());
+        assertEquals(positionX, adventurer.getPositionX());
+        assertEquals(positionY, adventurer.getPositionY());
+        assertEquals(0, adventurer.getActions().size());
     }
 
     @Test
-    void explorer_should_find_treasure() {
+    void adventurer_should_find_treasure() {
         Map map = readWriteMap.readMap("src/test/java/resources/map_with_pauline.txt");
         Treasure treasure = getTreasureFromMap(map);
         int nbTresorsInitial = treasure.getNbTreasures();
-        Explorer explorer = map.getExplorers().get(0);
-        int positionX = explorer.getPositionX();
-        int positionY = explorer.getPositionY();
-        map.getExplorers().get(0).setActions(new ArrayList<>(List.of(Action.D, Action.A, Action.A)));
+        Adventurer adventurer = map.getAdventurers().get(0);
+        int positionX = adventurer.getPositionX();
+        int positionY = adventurer.getPositionY();
+        map.getAdventurers().get(0).setActions(new ArrayList<>(List.of(Action.D, Action.A, Action.A)));
         Adventure adventure = new Adventure(map);
 
         adventure.treasureHunt();
 
-        assertEquals(Orientation.E, explorer.getOrientation());
-        assertEquals(positionX + 2, explorer.getPositionX());
-        assertEquals(positionY, explorer.getPositionY());
-        assertEquals(1, explorer.getNbTresorsTrouves());
+        assertEquals(Orientation.E, adventurer.getOrientation());
+        assertEquals(positionX + 2, adventurer.getPositionX());
+        assertEquals(positionY, adventurer.getPositionY());
+        assertEquals(1, adventurer.getNbTreasuresFound());
         assertEquals(nbTresorsInitial - 1, treasure.getNbTreasures());
     }
 

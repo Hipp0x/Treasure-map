@@ -1,9 +1,9 @@
 package pauline.adam.map;
 
 import lombok.Getter;
-import pauline.adam.explorer.Action;
-import pauline.adam.explorer.Explorer;
-import pauline.adam.explorer.Orientation;
+import pauline.adam.adventurer.Action;
+import pauline.adam.adventurer.Adventurer;
+import pauline.adam.adventurer.Orientation;
 import pauline.adam.exceptions.Exceptions;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class Map {
 
     private final int width;
     private final int height;
-    private List<Explorer> explorers = new ArrayList<>();
+    private List<Adventurer> adventurers = new ArrayList<>();
     private Tile[][] tiles;
 
     public Map(String width, String height) {
@@ -59,17 +59,17 @@ public class Map {
         tiles[positionY][positionX].gotANewTreasure(treasure);
     }
 
-    public void addExplorer(String name, String width, String height, String orientation, String actions) {
+    public void addadventurer(String name, String width, String height, String orientation, String actions) {
         int positionX = Integer.parseInt(width);
         int positionY = Integer.parseInt(height);
         if (isOutOfBounds(positionX, positionY)) {
-            throw new RuntimeException(Exceptions.EXPLORER_OUT_OF_BOUNDS.name());
+            throw new RuntimeException(Exceptions.ADVENTURER_OUT_OF_BOUNDS.name());
         }
-        Explorer explorer = new Explorer(name, positionX, positionY);
-        explorer.setOrientation(Orientation.valueOf(orientation));
-        explorer.setActions(Action.parseActions(actions));
-        explorers.add(explorer);
-        tiles[positionY][positionX].isNowOccupiedBy(explorer);
+        Adventurer adventurer = new Adventurer(name, positionX, positionY);
+        adventurer.setOrientation(Orientation.valueOf(orientation));
+        adventurer.setActions(Action.parseActions(actions));
+        adventurers.add(adventurer);
+        tiles[positionY][positionX].isNowOccupiedBy(adventurer);
 
     }
 }

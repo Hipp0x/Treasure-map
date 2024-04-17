@@ -1,6 +1,6 @@
 package pauline.adam.utils;
 
-import pauline.adam.explorer.Explorer;
+import pauline.adam.adventurer.Adventurer;
 import pauline.adam.map.Map;
 import pauline.adam.map.Tile;
 import pauline.adam.exceptions.Exceptions;
@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class ReadWriteMap {
                         map.addTreasure(lineArray[1], lineArray[2], lineArray[3]);
                         break;
                     case "A":
-                        map.addExplorer(lineArray[1], lineArray[2], lineArray[3], lineArray[4], lineArray[5]);
+                        map.addadventurer(lineArray[1], lineArray[2], lineArray[3], lineArray[4], lineArray[5]);
                         break;
                     default:
                         break;
@@ -75,14 +76,14 @@ public class ReadWriteMap {
      */
     public void writeMap(Map map, String mapPath) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(mapPath));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(mapPath, StandardCharsets.UTF_8) );
             // Ecriture de la taille de la carte
             writer.write("C - " + map.getWidth() + " - " + map.getHeight());
             writer.newLine();
-            // Récupération des mountains, treasures et explorers
+            // Récupération des mountains, treasures et adventurers
             List<Tile> mountains = new ArrayList<>();
             List<Tile> treasures = new ArrayList<>();
-            List<Explorer> explorers = new ArrayList<>();
+            List<Adventurer> adventurers = new ArrayList<>();
             for (Tile[] tiles : map.getTiles()) {
                 for (Tile tile : tiles) {
                     if (tile.hasTreasure()) {
@@ -92,14 +93,14 @@ public class ReadWriteMap {
                         mountains.add(tile);
                     }
                     if (tile.isOccupied()) {
-                        explorers.add(tile.getOccupant());
+                        adventurers.add(tile.getOccupant());
                     }
                 }
             }
-            // Ecritures des mountains, treasures et explorers
+            // Ecritures des mountains, treasures et adventurers
             writeMountains(writer, mountains);
             writeTresors(writer, treasures);
-            writeAventuriers(writer, explorers);
+            writeAdventurers(writer, adventurers);
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(Exceptions.IOEXCEPTION.name());
@@ -129,11 +130,11 @@ public class ReadWriteMap {
         }
     }
 
-    private void writeAventuriers(BufferedWriter writer, List<Explorer> explorers) {
+    private void writeAdventurers(BufferedWriter writer, List<Adventurer> adventurers) {
         try {
             writer.write("#  {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe vertical} - {Orientation} - {Nb. trésors ramassés}\n");
-            for (Explorer explorer : explorers) {
-                writer.write("A - " + explorer.getName() + " - " + explorer.getPositionX() + " - " + explorer.getPositionY() + " - " + explorer.getOrientation() + " - " + explorer.getNbTresorsTrouves());
+            for (Adventurer adventurer : adventurers) {
+                writer.write("A - " + adventurer.getName() + " - " + adventurer.getPositionX() + " - " + adventurer.getPositionY() + " - " + adventurer.getOrientation() + " - " + adventurer.getNbTreasuresFound());
                 writer.newLine();
             }
         } catch (IOException e) {

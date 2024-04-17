@@ -1,7 +1,7 @@
 package pauline.adam;
 
-import pauline.adam.explorer.Action;
-import pauline.adam.explorer.Explorer;
+import pauline.adam.adventurer.Action;
+import pauline.adam.adventurer.Adventurer;
 import pauline.adam.map.Map;
 import pauline.adam.map.Treasure;
 import pauline.adam.map.Tile;
@@ -9,7 +9,7 @@ import pauline.adam.map.Tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pauline.adam.explorer.Orientation.*;
+import static pauline.adam.adventurer.Orientation.*;
 
 public class Adventure {
 
@@ -23,87 +23,87 @@ public class Adventure {
      * Start the treasure hunt until no one can move anymore
      */
     public void treasureHunt() {
-        List<Explorer> explorers = this.map.getExplorers();
-        while(!explorers.isEmpty()) {
-            ArrayList<Explorer> explorersToRemove = new ArrayList<>();
-            for (Explorer explorer : explorers) {
-                Action actions = explorer.getActions().get(0);
+        List<Adventurer> adventurers = this.map.getAdventurers();
+        while(!adventurers.isEmpty()) {
+            ArrayList<Adventurer> adventurersToRemove = new ArrayList<>();
+            for (Adventurer adventurer : adventurers) {
+                Action actions = adventurer.getActions().get(0);
                 switch (actions) {
                     case A:
-                        explorerWantToMove(explorer, this.map);
+                        adventurerWantToMove(adventurer, this.map);
                         break;
                     case D:
-                        explorerWantToTurnRight(explorer);
+                        adventurerWantToTurnRight(adventurer);
                         break;
                     case G:
-                        explorerWantToTurnLeft(explorer);
+                        adventurerWantToTurnLeft(adventurer);
                         break;
                 }
-                explorer.getActions().remove(0);
-                if (explorer.getActions().isEmpty()) {
-                    explorersToRemove.add(explorer);
+                adventurer.getActions().remove(0);
+                if (adventurer.getActions().isEmpty()) {
+                    adventurersToRemove.add(adventurer);
                 }
             }
-            for (Explorer explorer : explorersToRemove) {
-                explorers.remove(explorer);
+            for (Adventurer adventurer : adventurersToRemove) {
+                adventurers.remove(adventurer);
             }
         }
 
     }
 
     /**
-     * Turn the explorer to the left
-     * @param explorer the explorer who wants to turn left
+     * Turn the adventurer to the left
+     * @param adventurer the adventurer who wants to turn left
      */
-    private void explorerWantToTurnLeft(Explorer explorer) {
-        switch (explorer.getOrientation()) {
+    private void adventurerWantToTurnLeft(Adventurer adventurer) {
+        switch (adventurer.getOrientation()) {
             case N:
-                explorer.setOrientation(O);
+                adventurer.setOrientation(O);
                 break;
             case S:
-                explorer.setOrientation(E);
+                adventurer.setOrientation(E);
                 break;
             case E:
-                explorer.setOrientation(N);
+                adventurer.setOrientation(N);
                 break;
             case O:
-                explorer.setOrientation(S);
+                adventurer.setOrientation(S);
                 break;
         }
     }
 
     /**
-     * Turn the explorer to the right
-     * @param explorer the explorer who wants to turn right
+     * Turn the adventurer to the right
+     * @param adventurer the adventurer who wants to turn right
      */
-    private void explorerWantToTurnRight(Explorer explorer) {
-        switch (explorer.getOrientation()) {
+    private void adventurerWantToTurnRight(Adventurer adventurer) {
+        switch (adventurer.getOrientation()) {
             case N:
-                explorer.setOrientation(E);
+                adventurer.setOrientation(E);
                 break;
             case S:
-                explorer.setOrientation(O);
+                adventurer.setOrientation(O);
                 break;
             case E:
-                explorer.setOrientation(S);
+                adventurer.setOrientation(S);
                 break;
             case O:
-                explorer.setOrientation(N);
+                adventurer.setOrientation(N);
                 break;
         }
     }
 
     /**
-     * Move the explorer to the new position if he can move
-     * @param explorer the explorer who wants to move
+     * Move the adventurer to the new position if he can move
+     * @param adventurer the adventurer who wants to move
      * @param map the map
      */
-    private void explorerWantToMove(Explorer explorer, Map map) {
-        int positionX = explorer.getPositionX();
-        int positionY = explorer.getPositionY();
+    private void adventurerWantToMove(Adventurer adventurer, Map map) {
+        int positionX = adventurer.getPositionX();
+        int positionY = adventurer.getPositionY();
         int newPositionX = positionX;
         int newPositionY = positionY;
-        switch(explorer.getOrientation()) {
+        switch(adventurer.getOrientation()) {
             case N:
                 newPositionY = positionY - 1;
                 break;
@@ -118,43 +118,43 @@ public class Adventure {
                 break;
         }
 
-        if (explorerCanMove(newPositionX, newPositionY, map)) {
-            explorerLeaveHisTuile(positionY, positionX, map);
-            explorer.move(newPositionX, newPositionY);
-            searchTreasure(explorer, map.getTiles()[newPositionY][newPositionX]);
-            map.getTiles()[newPositionY][newPositionX].isNowOccupiedBy(explorer);
+        if (adventurerCanMove(newPositionX, newPositionY, map)) {
+            adventurerLeaveHisTuile(positionY, positionX, map);
+            adventurer.move(newPositionX, newPositionY);
+            searchTreasure(adventurer, map.getTiles()[newPositionY][newPositionX]);
+            map.getTiles()[newPositionY][newPositionX].isNowOccupiedBy(adventurer);
         }
     }
 
     /**
-     * Check if the explorer can move to the new position
+     * Check if the adventurer can move to the new position
      * (so if the new position is not out of bound and if the tile is not a mountain and not already occupied)
      * @param positionX the new position on the x-axis
      * @param positionY the new position on the y-axis
      * @param map the map
-     * @return true if the explorer can move to the new position, false otherwise
+     * @return true if the adventurer can move to the new position, false otherwise
      */
-    private boolean explorerCanMove(int positionX, int positionY, Map map) {
+    private boolean adventurerCanMove(int positionX, int positionY, Map map) {
         return positionX >= 0 && positionX < map.getWidth() &&
                 positionY >= 0 && positionY < map.getHeight() &&
                 map.getTiles()[positionY][positionX].canMoveInto();
     }
 
-    private void explorerLeaveHisTuile(int posLongueur, int posLargeur, Map map) {
+    private void adventurerLeaveHisTuile(int posLongueur, int posLargeur, Map map) {
         map.getTiles()[posLongueur][posLargeur].isNoLongerOccupied();
     }
 
     /**
      * Search for a treasure on the tile and claim it if there is one
-     * @param explorer the explorer who is searching for the treasure
-     * @param tile the tile where the explorer is and seaching for the treasure
+     * @param adventurer the adventurer who is searching for the treasure
+     * @param tile the tile where the adventurer is and seaching for the treasure
      */
-    private void searchTreasure(Explorer explorer, Tile tile) {
+    private void searchTreasure(Adventurer adventurer, Tile tile) {
         if (tile.hasTreasure()) {
             Treasure treasure = tile.getTreasure();
             int nbTresors = treasure.getNbTreasures();
             treasure.setNbTreasures(nbTresors - 1);
-            explorer.findNewTresor();
+            adventurer.findNewTreasure();
             if (treasure.getNbTreasures() == 0) {
                 tile.treasureHasBeenFound();
             }

@@ -47,7 +47,7 @@ class ReadWriteMapTest {
         assertEquals(4, map.getHeight());
         assertEquals(2, countNbMountains(map));
         assertEquals(2, countNbTresors(map));
-        assertEquals(1, map.getExplorers().size());
+        assertEquals(1, map.getAdventurers().size());
     }
 
     private int countNbTresors(Map map) {

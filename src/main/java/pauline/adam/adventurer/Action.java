@@ -1,4 +1,4 @@
-package pauline.adam.explorer;
+package pauline.adam.adventurer;
 
 import java.util.ArrayList;
 

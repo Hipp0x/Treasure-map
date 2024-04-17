@@ -9,7 +9,7 @@ public enum Exceptions {
     DOUBLE_MAP_DEFINITION("Map already defined at top of the file"),
     MOUNTAIN_OUT_OF_BOUNDS("Mountain out of bounds"),
     TREASURE_OUT_OF_BOUNDS("Treasure out of bounds"),
-    EXPLORER_OUT_OF_BOUNDS("Explorer out of bounds"),
+    ADVENTURER_OUT_OF_BOUNDS("AdventurerAdventurer out of bounds"),
     NEGATIVE_TREASURE("Negative treasure")
     ;
 
